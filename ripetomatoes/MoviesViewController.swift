@@ -37,19 +37,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
        
         tableView.delegate = self
         tableView.dataSource = self
-        
-   /*     let YourApiKey = "9nee6kpg3mtbpnr4y2eujegq"
-        let RottenTomatoesURLString = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=" + YourApiKey
-        
-        let request = NSMutableURLRequest(URL: NSURL.URLWithString(RottenTomatoesURLString))
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler:{ (response, data, error) in
-            var errorValue: NSError? = nil
-            var dictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &errorValue) as NSDictionary
-  
-            self.movies = dictionary["movies"] as [NSDictionary]
-            self.tableView.reloadData()
-        
-        }) */
+        tableView.backgroundColor = UIColor.blackColor()
+        tableView.tintColor = UIColor.whiteColor()
+        tableView.separatorColor = UIColor.darkGrayColor()
         loadMovies()
     }
     
@@ -66,16 +56,47 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if segue.identifier == "detailSegue" {
-        let index = tableView.indexPathForSelectedRow()?.row
-        println(" row selected = \(index)")
+        var rowIndex = tableView.indexPathForSelectedRow()?.row
+        println(" row selected = \(rowIndex)")
+        storeMovieDetails(rowIndex!)
             
-        var defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject("some_string_to_save", forKey: "some_key_that_you_choose")
-        defaults.setInteger(123, forKey: "another_key_that_you_choose")
-        defaults.synchronize()
         }
     }
 
+    func storeMovieDetails (jsonIndex: Int)
+    {
+        println(" storeMovieDetailsrow selected = \(jsonIndex)")
+        var movieItem = movies[jsonIndex] as NSDictionary
+        println(" movies total = \(movies.count)")
+    //    println(" movieItem selected = \(movieItem)")
+        var defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setValuesForKeysWithDictionary(movieItem)
+        defaults.setValue(movieItem["title"], forKey: "title")
+        var year = movieItem["year"] as Int
+        defaults.setInteger(year, forKey: "year")
+     
+        defaults.setValue(movieItem["mpaa_rating"], forKey: "mpaa_rating")
+     
+        var ratings = movieItem["ratings"] as NSDictionary
+        var critics_score = ratings["critics_score"] as Int
+        defaults.setInteger(critics_score, forKey: "critics_score")
+        var audience_score = ratings["audience_score"] as Int
+        defaults.setInteger(audience_score, forKey: "audience_score")
+  
+        defaults.setValue(movieItem["synopsis"], forKey: "synopsis")
+        var posters = movieItem["posters"] as NSDictionary
+        defaults.setValue(posters["thumbnail"], forKey: "thumbnail")
+        var profile = (posters["thumbnail"] as NSString).stringByReplacingOccurrencesOfString("tmb", withString: "pro")
+        defaults.setValue(profile, forKey: "profile")
+        
+        let detailed = (posters["thumbnail"] as NSString).stringByReplacingOccurrencesOfString("tmb", withString: "det")
+        defaults.setValue(detailed, forKey: "detailed")
+        
+        let original = (posters["thumbnail"] as NSString).stringByReplacingOccurrencesOfString("tmb", withString: "ori")
+        defaults.setValue(original, forKey: "original")
+        defaults.synchronize()
+ 
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
