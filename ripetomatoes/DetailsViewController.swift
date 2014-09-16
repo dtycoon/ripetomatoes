@@ -29,9 +29,10 @@ class DetailsViewController: UIViewController {
         mpaaRating.textColor = UIColor.whiteColor()
         synopsisLabel.textColor = UIColor.whiteColor()
         
-        
         loadMovieDetails()
+        self.synopsisLabel.sizeToFit()
     }
+    
 
     @IBAction func onTap(sender: AnyObject) {
         println("OnTap ")
@@ -96,9 +97,20 @@ class DetailsViewController: UIViewController {
             mpaaRatingFrame.origin.y =
                 self.posterView.frame.minY + self.titleLabel.frame.height + self.ratingsLabel.frame.height
             
+     
             synopsisLabelFrame.origin.y =
                 self.posterView.frame.minY + self.titleLabel.frame.height + self.ratingsLabel.frame.height + self.mpaaRating.frame.height
+      
+       /*     let maxHeight : CGFloat = self.synopsisLabel.frame.maxY - synopsisLabelFrame.origin.y
+            let rect = self.synopsisLabel.attributedText?.boundingRectWithSize(CGSizeMake(self.synopsisLabel.frame.width, maxHeight),
+                options: .UsesLineFragmentOrigin, context: nil).height
             
+            
+            synopsisLabelFrame.size.height = rect! */
+            
+        /*
+            synopsisLabelFrame.size.height = self.synopsisLabel.frame.maxY - synopsisLabelFrame.origin.y
+            */
             self.posterView.alpha = 0
             
             self.synopsisLabel.frame = synopsisLabelFrame
@@ -120,9 +132,6 @@ class DetailsViewController: UIViewController {
             var mpaaRatingFrame = self.mpaaRating.frame
            
             self.posterView.alpha = 1
-       /*     synopsisLabelFrame.origin.y =
-                497 */
-            
             
             titleLabelFrame.origin.y =
                 self.posterView.frame.maxY
@@ -137,8 +146,16 @@ class DetailsViewController: UIViewController {
             
             synopsisLabelFrame.origin.y =
                 self.posterView.frame.maxY + self.titleLabel.frame.height + self.ratingsLabel.frame.height + self.mpaaRating.frame.height
+       
+    /*        let maxHeight : CGFloat = self.synopsisLabel.frame.maxY - synopsisLabelFrame.origin.y
+            let rect = self.synopsisLabel.attributedText?.boundingRectWithSize(CGSizeMake(self.synopsisLabel.frame.width, maxHeight),
+                options: .UsesLineFragmentOrigin, context: nil).height
             
-            self.synopsisLabel.frame = synopsisLabelFrame
+            
+            synopsisLabelFrame.size.height = rect! */
+
+            
+           self.synopsisLabel.frame = synopsisLabelFrame
             self.titleLabel.frame = titleLabelFrame
             self.yearLabel.frame = yearLabelFrame
             self.ratingsLabel.frame = ratingsLabelFrame
