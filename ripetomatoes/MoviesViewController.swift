@@ -15,7 +15,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     var refreshControl:UIRefreshControl!
     var movies: [NSDictionary] = []
-    
+    var hud: MBProgressHUD!
     
     
     func loadMovies()
@@ -23,10 +23,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let YourApiKey = "9nee6kpg3mtbpnr4y2eujegq"
     /*    let RottenTomatoesURLString = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=" + YourApiKey */
         let RottenTomatoesURLString = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=" + YourApiKey
-        
+        hud.show(true)
         let request = NSMutableURLRequest(URL: NSURL.URLWithString(RottenTomatoesURLString))
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler:{ (response, data, error) in
             if (error != nil) {
+                self.hud.hide(true)
                 println("API error: \(error), \(error.userInfo)")
                 self.refreshControl.endRefreshing()
                 self.makeAlertLayout("Network Error")
@@ -36,6 +37,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             var errorValue: NSError? = nil
             var dictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &errorValue) as NSDictionary
             if (errorValue != nil) {
+                self.hud.hide(true)
                 println("Error parsing json: \(errorValue)")
                 self.refreshControl.endRefreshing()
                 self.makeAlertLayout("JSON parsing error")
@@ -43,6 +45,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             else
             {
             //self.errorLabel.hidden = true
+            self.hud.hide(true)
             self.movies = dictionary["movies"] as [NSDictionary]
             self.tableView.reloadData()
             self.refreshControl.endRefreshing()
@@ -79,6 +82,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
        
         tableView.delegate = self
         tableView.dataSource = self
+        hud = MBProgressHUD(view: self.navigationController?.view)
+        hud.labelText = "Loading movies..."
+        self.navigationController?.view.addSubview(hud)
+        
         tableView.backgroundColor = UIColor.blackColor()
         tableView.tintColor = UIColor.whiteColor()
         tableView.separatorColor = UIColor.darkGrayColor()
