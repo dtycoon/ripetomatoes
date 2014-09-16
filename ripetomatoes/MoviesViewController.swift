@@ -12,10 +12,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
 
     @IBOutlet weak var tableView: UITableView!
     
+    
     var refreshControl:UIRefreshControl!
     var movies: [NSDictionary] = []
     var hud: MBProgressHUD!
-    
+    var networkError = UILabel(frame: CGRectMake(0, 0, 320, 40))
     
     func loadMovies()
     {
@@ -29,7 +30,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 self.hud.hide(true)
                 println("API error: \(error), \(error.userInfo)")
                 self.refreshControl.endRefreshing()
-                self.makeAlertLayout("Network Error")
+               // self.makeAlertLayout("Network Error")
+                self.makeNetworkError("Network Error")
             }
             else
             {
@@ -39,11 +41,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 self.hud.hide(true)
                 println("Error parsing json: \(errorValue)")
                 self.refreshControl.endRefreshing()
-                self.makeAlertLayout("JSON parsing error")
+                self.makeNetworkError("JSON Parsing Error")
             }
             else
             {
             //self.errorLabel.hidden = true
+            self.networkError.hidden = true
             self.hud.hide(true)
             self.movies = dictionary["movies"] as [NSDictionary]
             self.tableView.reloadData()
@@ -73,6 +76,17 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
+    func makeNetworkError(alertMessage: String)
+    {
+        //networkError = UILabel(frame: CGRectMake(0, 0, 320, 40))
+        networkError.textAlignment = NSTextAlignment.Center
+        networkError.textColor = UIColor.whiteColor()
+        networkError.backgroundColor = UIColor.lightGrayColor()
+        networkError.font = UIFont(name: "HelveticaNeue-Bold", size: CGFloat(14))
+        networkError.text = alertMessage
+        
+        self.tableView.addSubview(networkError)
+    }
 
     
     override func viewDidLoad() {
