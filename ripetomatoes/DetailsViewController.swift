@@ -80,16 +80,32 @@ class DetailsViewController: UIViewController {
     func slideUpAnimation() {
         UIView.animateWithDuration(0.7, delay: 1.0, options: .CurveEaseOut, animations: {
             var synopsisLabelFrame = self.synopsisLabel.frame
-            synopsisLabelFrame.origin.y =
+            var titleLabelFrame = self.titleLabel.frame
+            var yearLabelFrame = self.yearLabel.frame
+            var ratingsLabelFrame = self.ratingsLabel.frame
+            var mpaaRatingFrame = self.mpaaRating.frame
+            
+            titleLabelFrame.origin.y =
             self.posterView.frame.minY
             
+            yearLabelFrame.origin.y =
+                self.posterView.frame.minY
+            
+            ratingsLabelFrame.origin.y =
+                self.posterView.frame.minY + self.titleLabel.frame.height
+            mpaaRatingFrame.origin.y =
+                self.posterView.frame.minY + self.titleLabel.frame.height + self.ratingsLabel.frame.height
+            
+            synopsisLabelFrame.origin.y =
+                self.posterView.frame.minY + self.titleLabel.frame.height + self.ratingsLabel.frame.height + self.mpaaRating.frame.height
+            
             self.posterView.alpha = 0
-            self.titleLabel.alpha = 0;
-            self.yearLabel.alpha = 0;
-            self.ratingsLabel.alpha = 0;
-            self.mpaaRating.alpha = 0;
             
             self.synopsisLabel.frame = synopsisLabelFrame
+            self.titleLabel.frame = titleLabelFrame
+            self.yearLabel.frame = yearLabelFrame
+            self.ratingsLabel.frame = ratingsLabelFrame
+            self.mpaaRating.frame = mpaaRatingFrame
             }, completion: { finished in
                 println("label slide up!")
         })
@@ -98,16 +114,36 @@ class DetailsViewController: UIViewController {
     func slideDownAnimation() {
         UIView.animateWithDuration(0.7, delay: 1.0, options: .CurveEaseOut, animations: {
             var synopsisLabelFrame = self.synopsisLabel.frame
-            synopsisLabelFrame.origin.y =
-                497
-            
+            var titleLabelFrame = self.titleLabel.frame
+            var yearLabelFrame = self.yearLabel.frame
+            var ratingsLabelFrame = self.ratingsLabel.frame
+            var mpaaRatingFrame = self.mpaaRating.frame
+           
             self.posterView.alpha = 1
-            self.titleLabel.alpha = 1;
-            self.yearLabel.alpha = 1;
-            self.ratingsLabel.alpha = 1;
-            self.mpaaRating.alpha = 1;
+       /*     synopsisLabelFrame.origin.y =
+                497 */
+            
+            
+            titleLabelFrame.origin.y =
+                self.posterView.frame.maxY
+            
+            yearLabelFrame.origin.y =
+                self.posterView.frame.maxY
+           
+            ratingsLabelFrame.origin.y =
+                self.posterView.frame.maxY + self.titleLabel.frame.height
+            mpaaRatingFrame.origin.y =
+                self.posterView.frame.maxY + self.titleLabel.frame.height + self.ratingsLabel.frame.height
+            
+            synopsisLabelFrame.origin.y =
+                self.posterView.frame.maxY + self.titleLabel.frame.height + self.ratingsLabel.frame.height + self.mpaaRating.frame.height
             
             self.synopsisLabel.frame = synopsisLabelFrame
+            self.titleLabel.frame = titleLabelFrame
+            self.yearLabel.frame = yearLabelFrame
+            self.ratingsLabel.frame = ratingsLabelFrame
+            self.mpaaRating.frame = mpaaRatingFrame
+            
             }, completion: { finished in
                 println("label slide down!")
         })

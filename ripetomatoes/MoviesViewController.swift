@@ -27,7 +27,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     func loadMovies()
     {
         let YourApiKey = "9nee6kpg3mtbpnr4y2eujegq"
-        let RottenTomatoesURLString = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=" + YourApiKey
+    /*    let RottenTomatoesURLString = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=" + YourApiKey */
+        let RottenTomatoesURLString = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=" + YourApiKey
         
         let request = NSMutableURLRequest(URL: NSURL.URLWithString(RottenTomatoesURLString))
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler:{ (response, data, error) in
