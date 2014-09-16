@@ -52,10 +52,8 @@ class DetailsViewController: UIViewController {
         self.titleLabel.text = (defaults.valueForKey("title") as String)
       
         var label = UILabel(frame: CGRectMake(0, 0, 20, 21))
-       // label.center = CGPointMake(160, 284) //CGPointMake(20, 20)
         label.textAlignment = NSTextAlignment.Center
         label.textColor = UIColor.orangeColor()
-       // label.shadowColor = UIColor.blackColor()
         label.font = UIFont(name: "HelveticaNeue-Bold", size: CGFloat(14))
         label.text = (defaults.valueForKey("title") as String)
         

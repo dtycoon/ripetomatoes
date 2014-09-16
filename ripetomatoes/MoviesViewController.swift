@@ -13,11 +13,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var reloadButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
-    
+    var refreshControl:UIRefreshControl!
     let button1 = UIButton.buttonWithType(UIButtonType.System) as UIButton
     let label1 = UILabel() as UILabel
-    let atRest = "Doesn't do much"
-    let atWork = "Secret Agent"
     
   //  @IBOutlet var errorLabel: UILabel!
     
@@ -35,6 +33,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler:{ (response, data, error) in
             if (error != nil) {
                 println("API error: \(error), \(error.userInfo)")
+                self.refreshControl.endRefreshing()
              //   self.makeLayout()
             }
             else
@@ -43,6 +42,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             var dictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &errorValue) as NSDictionary
             if (errorValue != nil) {
                 println("Error parsing json: \(errorValue)")
+                self.refreshControl.endRefreshing()
            //     self.makeLayout()
             }
             else
@@ -50,6 +50,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             //self.errorLabel.hidden = true
             self.movies = dictionary["movies"] as [NSDictionary]
             self.tableView.reloadData()
+            self.refreshControl.endRefreshing()
             }
             }
         })
@@ -66,9 +67,29 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
        
         tableView.delegate = self
         tableView.dataSource = self
-  //      tableView.backgroundColor = UIColor.blackColor()
-  //      tableView.tintColor = UIColor.whiteColor()
-  //      tableView.separatorColor = UIColor.darkGrayColor()
+        tableView.backgroundColor = UIColor.blackColor()
+        tableView.tintColor = UIColor.whiteColor()
+        tableView.separatorColor = UIColor.darkGrayColor()
+        var label = UILabel(frame: CGRectMake(0, 0, 20, 21))
+        label.textAlignment = NSTextAlignment.Center
+        label.textColor = UIColor.orangeColor()
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: CGFloat(14))
+        label.text = "Movies"
+        self.navigationController?.navigationBar.backgroundColor = UIColor.blackColor()
+        navigationItem.titleView = label
+   //     self.navigationItem.
+        loadMovies()
+        
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refersh")
+        self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.tableView.addSubview(refreshControl)
+        
+    }
+    
+    func refresh(sender:AnyObject)
+    {
+        println(" reloading from refresh ")
         loadMovies()
     }
     
