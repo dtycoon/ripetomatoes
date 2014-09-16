@@ -65,9 +65,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         println("before offline parsed json:")
         let data = defaults.objectForKey("JSONBLOB")? as NSDictionary
  
+        if(data.count > 0)
+        {
         self.movies = data["movies"] as [NSDictionary]
         self.tableView.reloadData()
         self.refreshControl.endRefreshing()
+        }
     
     }
     
@@ -197,8 +200,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         var cell = tableView.dequeueReusableCellWithIdentifier("MovieCell") as MovieCell
         var movieItem = movies[indexPath.row]
         cell.movieTitleLabel.text = movieItem["title"] as? String
-        cell.movieSynopsisLabel.text = movieItem["synopsis"] as? String
-        
+        var synposis = (movieItem["synopsis"] as? String)!
+        var synopAttrStr = NSMutableAttributedString(string:"  \(synposis)")
+        var attrs = [NSFontAttributeName : UIFont(name: "HelveticaNeue-Bold", size: CGFloat(10))]
+        var mpaaAttStr = NSMutableAttributedString(string:(movieItem["mpaa_rating"] as? String)!, attributes:attrs)
+        mpaaAttStr.appendAttributedString(synopAttrStr)
+        cell.movieSynopsisLabel.attributedText = mpaaAttStr
         var posters = movieItem["posters"] as NSDictionary
         var posterUrl = posters["thumbnail"] as String
         cell.posterView.setImageWithURL(NSURL(string: posterUrl))
