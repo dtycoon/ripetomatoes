@@ -78,16 +78,19 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
 
-       
+  
+        self.view.backgroundColor = UIColor.blackColor()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = UIColor.blackColor()
+        tableView.tintColor = UIColor.whiteColor()
+        tableView.separatorColor = UIColor.darkGrayColor()
+        
         hud = MBProgressHUD(view: self.navigationController?.view)
         hud.labelText = "Loading movies..."
         self.navigationController?.view.addSubview(hud)
         
-        tableView.backgroundColor = UIColor.blackColor()
-        tableView.tintColor = UIColor.whiteColor()
-        tableView.separatorColor = UIColor.darkGrayColor()
+        
         var label = UILabel(frame: CGRectMake(0, 0, 20, 21))
         label.textAlignment = NSTextAlignment.Center
         label.textColor = UIColor.orangeColor()
@@ -95,14 +98,14 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         label.text = "Movies"
         self.navigationController?.navigationBar.backgroundColor = UIColor.blackColor()
         navigationItem.titleView = label
-   //     self.navigationItem.
-        loadMovies()
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refersh")
         self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refreshControl)
         
+        loadMovies()
+
     }
     
     func refresh(sender:AnyObject)
