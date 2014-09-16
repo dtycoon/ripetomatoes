@@ -13,7 +13,18 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var reloadButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
+    
+    let button1 = UIButton.buttonWithType(UIButtonType.System) as UIButton
+    let label1 = UILabel() as UILabel
+    let atRest = "Doesn't do much"
+    let atWork = "Secret Agent"
+    
+  //  @IBOutlet var errorLabel: UILabel!
+    
      var movies: [NSDictionary] = []
+    
+    
+   
     
     func loadMovies()
     {
@@ -22,24 +33,42 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         let request = NSMutableURLRequest(URL: NSURL.URLWithString(RottenTomatoesURLString))
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler:{ (response, data, error) in
+            if (error != nil) {
+                println("API error: \(error), \(error.userInfo)")
+             //   self.makeLayout()
+            }
+            else
+            {
             var errorValue: NSError? = nil
             var dictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &errorValue) as NSDictionary
-            
+            if (errorValue != nil) {
+                println("Error parsing json: \(errorValue)")
+           //     self.makeLayout()
+            }
+            else
+            {
+            //self.errorLabel.hidden = true
             self.movies = dictionary["movies"] as [NSDictionary]
             self.tableView.reloadData()
+            }
+            }
         })
 
         
     }
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
        
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = UIColor.blackColor()
-        tableView.tintColor = UIColor.whiteColor()
-        tableView.separatorColor = UIColor.darkGrayColor()
+  //      tableView.backgroundColor = UIColor.blackColor()
+  //      tableView.tintColor = UIColor.whiteColor()
+  //      tableView.separatorColor = UIColor.darkGrayColor()
         loadMovies()
     }
     
@@ -124,4 +153,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
 
+    func tableView(_tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
 }

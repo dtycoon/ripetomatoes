@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>DFD23BE8-1ADC-4BD9-B56D-D2BEE9A81170</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ripetomatoes</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>FADE5DBE3EA00DF17EF6DB82123040CC164AB45C</key>
+		<string>https://github.com/dtycoon/ripetomatoes.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ripetomatoes.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>FADE5DBE3EA00DF17EF6DB82123040CC164AB45C</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/dtycoon/ripetomatoes.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>FADE5DBE3EA00DF17EF6DB82123040CC164AB45C</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>FADE5DBE3EA00DF17EF6DB82123040CC164AB45C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ripetomatoes</string>
+		</dict>
+	</array>
+</dict>
+</plist>
