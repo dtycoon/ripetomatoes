@@ -20,6 +20,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     func loadMovies()
     {
+        var defaults = NSUserDefaults.standardUserDefaults()
+        self.networkError.hidden = true
         let YourApiKey = "9nee6kpg3mtbpnr4y2eujegq"
     /*    let RottenTomatoesURLString = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=" + YourApiKey */
         let RottenTomatoesURLString = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=" + YourApiKey
@@ -30,8 +32,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 self.hud.hide(true)
                 println("API error: \(error), \(error.userInfo)")
                 self.refreshControl.endRefreshing()
-               // self.makeAlertLayout("Network Error")
                 self.makeNetworkError("Network Error")
+                self.parseOfflineData()
             }
             else
             {
@@ -45,8 +47,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             }
             else
             {
-            //self.errorLabel.hidden = true
-            self.networkError.hidden = true
+            defaults.setObject(dictionary, forKey: "JSONBLOB")
             self.hud.hide(true)
             self.movies = dictionary["movies"] as [NSDictionary]
             self.tableView.reloadData()
@@ -55,7 +56,19 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             }
         })
 
-        
+        defaults.synchronize()
+    }
+    
+    func parseOfflineData()
+    {
+        var defaults = NSUserDefaults.standardUserDefaults()
+        println("before offline parsed json:")
+        let data = defaults.objectForKey("JSONBLOB")? as NSDictionary
+ 
+        self.movies = data["movies"] as [NSDictionary]
+        self.tableView.reloadData()
+        self.refreshControl.endRefreshing()
+    
     }
     
     func makeAlertLayout(alertMessage: String)
@@ -78,13 +91,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     func makeNetworkError(alertMessage: String)
     {
-        //networkError = UILabel(frame: CGRectMake(0, 0, 320, 40))
         networkError.textAlignment = NSTextAlignment.Center
         networkError.textColor = UIColor.whiteColor()
         networkError.backgroundColor = UIColor.lightGrayColor()
         networkError.font = UIFont(name: "HelveticaNeue-Bold", size: CGFloat(14))
         networkError.text = alertMessage
-        
+        self.networkError.hidden = false
         self.tableView.addSubview(networkError)
     }
 
@@ -133,7 +145,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if segue.identifier == "detailSegue" {
         var rowIndex = tableView.indexPathForSelectedRow()?.row
-        println(" row selected = \(rowIndex)")
         storeMovieDetails(rowIndex!)
             
         }
@@ -141,10 +152,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
 
     func storeMovieDetails (jsonIndex: Int)
     {
-        println(" storeMovieDetailsrow selected = \(jsonIndex)")
         var movieItem = movies[jsonIndex] as NSDictionary
-        println(" movies total = \(movies.count)")
-    //    println(" movieItem selected = \(movieItem)")
         var defaults = NSUserDefaults.standardUserDefaults()
         defaults.setValuesForKeysWithDictionary(movieItem)
         defaults.setValue(movieItem["title"], forKey: "title")
@@ -185,7 +193,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        println("I'm at row: \(indexPath.row), section: \(indexPath.section)")
        
         var cell = tableView.dequeueReusableCellWithIdentifier("MovieCell") as MovieCell
         var movieItem = movies[indexPath.row]
