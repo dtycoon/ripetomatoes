@@ -14,15 +14,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var tableView: UITableView!
     
     var refreshControl:UIRefreshControl!
-    let button1 = UIButton.buttonWithType(UIButtonType.System) as UIButton
-    let label1 = UILabel() as UILabel
-    
-  //  @IBOutlet var errorLabel: UILabel!
-    
-     var movies: [NSDictionary] = []
+    var movies: [NSDictionary] = []
     
     
-   
     
     func loadMovies()
     {
@@ -35,7 +29,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             if (error != nil) {
                 println("API error: \(error), \(error.userInfo)")
                 self.refreshControl.endRefreshing()
-             //   self.makeLayout()
+                self.makeAlertLayout("Network Error")
             }
             else
             {
@@ -44,7 +38,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             if (errorValue != nil) {
                 println("Error parsing json: \(errorValue)")
                 self.refreshControl.endRefreshing()
-           //     self.makeLayout()
+                self.makeAlertLayout("JSON parsing error")
             }
             else
             {
@@ -59,8 +53,25 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
+    func makeAlertLayout(alertMessage: String)
+    {
+        var alert = UIAlertController(title: "Alert", message: alertMessage, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { action in
+            switch action.style{
+            case .Default:
+                println("default")
+                
+            case .Cancel:
+                println("cancel")
+                
+            case .Destructive:
+                println("destructive")
+            }
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
     
-    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
