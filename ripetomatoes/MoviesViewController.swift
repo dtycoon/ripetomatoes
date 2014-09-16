@@ -10,7 +10,6 @@ import UIKit
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    @IBOutlet weak var reloadButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     var refreshControl:UIRefreshControl!
@@ -112,16 +111,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         loadMovies()
     }
     
-      @IBAction func onTapReload(sender: UIButton) {
-        if(sender as NSObject == self.reloadButton)
-        {
-            println(" reloading ")
-        loadMovies()
-        }
-  
-        
-    }
-    
+
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if segue.identifier == "detailSegue" {

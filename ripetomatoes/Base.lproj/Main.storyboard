@@ -57,22 +57,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Movies" id="KMc-ah-P2Y">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="i9D-X9-uLg">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="EVG-h5-vl5">
-                                <rect key="frame" x="-23" y="-15" width="71" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Reload">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="onTapReload:" destination="vXZ-lx-hvc" eventType="touchDown" id="nbr-qc-kTh"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Movies" id="KMc-ah-P2Y"/>
                     <connections>
-                        <outlet property="reloadButton" destination="EVG-h5-vl5" id="kYa-8l-Zrs"/>
                         <outlet property="tableView" destination="HOP-yz-qRb" id="HD9-DS-Q0D"/>
                     </connections>
                 </viewController>
