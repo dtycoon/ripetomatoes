@@ -21,7 +21,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     func loadMovies()
     {
         var defaults = NSUserDefaults.standardUserDefaults()
-        self.networkError.hidden = true
+        
         let YourApiKey = "9nee6kpg3mtbpnr4y2eujegq"
     /*    let RottenTomatoesURLString = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=" + YourApiKey */
         let RottenTomatoesURLString = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=" + YourApiKey
@@ -48,6 +48,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             else
             {
             defaults.setObject(dictionary, forKey: "JSONBLOB")
+            self.networkError.hidden = true
             self.hud.hide(true)
             self.movies = dictionary["movies"] as [NSDictionary]
             self.tableView.reloadData()
@@ -63,14 +64,16 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     {
         var defaults = NSUserDefaults.standardUserDefaults()
         println("before offline parsed json:")
-        let data = defaults.objectForKey("JSONBLOB")? as NSDictionary
- 
-        if(data.count > 0)
+        //defaults.o
+        if(defaults.objectForKey("JSONBLOB") != nil)
         {
+         let data = defaults.objectForKey("JSONBLOB") as NSDictionary
+ 
         self.movies = data["movies"] as [NSDictionary]
         self.tableView.reloadData()
         self.refreshControl.endRefreshing()
         }
+       // }
     
     }
     
@@ -94,6 +97,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     func makeNetworkError(alertMessage: String)
     {
+        if(self.networkError.hidden == true )
+        {
+        println(" self.networkError.hidden == false")
         networkError.textAlignment = NSTextAlignment.Center
         networkError.textColor = UIColor.whiteColor()
         networkError.backgroundColor = UIColor.lightGrayColor()
@@ -101,6 +107,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         networkError.text = alertMessage
         self.networkError.hidden = false
         self.tableView.addSubview(networkError)
+        }
+        else
+        {
+        println(" self.networkError.hidden == false")
+        }
     }
 
     
@@ -132,7 +143,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refersh")
         self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refreshControl)
-        
+        self.networkError.hidden = true
         loadMovies()
 
     }
